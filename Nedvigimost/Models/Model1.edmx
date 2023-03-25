@@ -1,0 +1,738 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdUsers" Type="int" />
+          <Property Name="IdReal_Estate" Type="int" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Full_Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdUsers" Type="int" />
+          <Property Name="IdApplication" Type="int" />
+          <Property Name="IdRequest_for_an_appraiser" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityType Name="Property_type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Real_estate">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="IdProperty_type" Type="int" Nullable="false" />
+          <Property Name="IdCities" Type="int" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
+          <Property Name="Squarе" Type="varchar" MaxLength="255" />
+          <Property Name="Price_on_sale" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Appraiser_price" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="IdUsers" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdContract" Type="int" />
+          <Property Name="Result" Type="bit" />
+          <Property Name="Date_of_conclusion" Type="date" />
+        </EntityType>
+        <EntityType Name="Request_for_an_appraiser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdUsers" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="int" />
+          <Property Name="Adress" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="IdRole" Type="int" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="int" />
+        </EntityType>
+        <Association Name="FK_Application_Real_estate">
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="0..1" />
+          <End Role="Application" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Real_estate">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="IdReal_Estate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Application_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Application" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Application">
+          <End Role="Application" Type="Self.Application" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdApplication" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Report">
+          <End Role="Report" Type="Self.Report" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Report">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Request_for_an_appraiser">
+          <End Role="Request_for_an_appraiser" Type="Self.Request_for_an_appraiser" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request_for_an_appraiser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdApplication" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Real_estate_Cities">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Real_estate">
+              <PropertyRef Name="IdCities" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Real_estate_Property_type">
+          <End Role="Property_type" Type="Self.Property_type" Multiplicity="1" />
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property_type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Real_estate">
+              <PropertyRef Name="IdProperty_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Real_estate_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Real_estate">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Request_for_an_appraiser_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Request_for_an_appraiser" Type="Self.Request_for_an_appraiser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Request_for_an_appraiser">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ModelContainer">
+          <EntitySet Name="Application" EntityType="Self.Application" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contract" EntityType="Self.Contract" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Property_type" EntityType="Self.Property_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Real_estate" EntityType="Self.Real_estate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Request_for_an_appraiser" EntityType="Self.Request_for_an_appraiser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Application_Real_estate" Association="Self.FK_Application_Real_estate">
+            <End Role="Real_estate" EntitySet="Real_estate" />
+            <End Role="Application" EntitySet="Application" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Application_Users" Association="Self.FK_Application_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Application" EntitySet="Application" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Application" Association="Self.FK_Contract_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Report" Association="Self.FK_Contract_Report">
+            <End Role="Report" EntitySet="Report" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Request_for_an_appraiser" Association="Self.FK_Contract_Request_for_an_appraiser">
+            <End Role="Request_for_an_appraiser" EntitySet="Request_for_an_appraiser" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Users" Association="Self.FK_Contract_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Real_estate_Cities" Association="Self.FK_Real_estate_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Real_estate" EntitySet="Real_estate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Real_estate_Property_type" Association="Self.FK_Real_estate_Property_type">
+            <End Role="Property_type" EntitySet="Property_type" />
+            <End Role="Real_estate" EntitySet="Real_estate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Real_estate_Users" Association="Self.FK_Real_estate_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Real_estate" EntitySet="Real_estate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_for_an_appraiser_Users" Association="Self.FK_Request_for_an_appraiser_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Request_for_an_appraiser" EntitySet="Request_for_an_appraiser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Role" Association="Self.FK_Users_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdUsers" Type="Int32" />
+          <Property Name="IdReal_Estate" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Full_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Real_estate" Relationship="Self.FK_Application_Real_estate" FromRole="Application" ToRole="Real_estate" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Application_Users" FromRole="Application" ToRole="Users" />
+          <NavigationProperty Name="Contract" Relationship="Self.FK_Contract_Application" FromRole="Application" ToRole="Contract" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Real_estate" Relationship="Self.FK_Real_estate_Cities" FromRole="Cities" ToRole="Real_estate" />
+        </EntityType>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdUsers" Type="Int32" />
+          <Property Name="IdApplication" Type="Int32" />
+          <Property Name="IdRequest_for_an_appraiser" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Application" Relationship="Self.FK_Contract_Application" FromRole="Contract" ToRole="Application" />
+          <NavigationProperty Name="Report" Relationship="Self.FK_Contract_Report" FromRole="Contract" ToRole="Report" />
+          <NavigationProperty Name="Request_for_an_appraiser" Relationship="Self.FK_Contract_Request_for_an_appraiser" FromRole="Contract" ToRole="Request_for_an_appraiser" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Contract_Users" FromRole="Contract" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Property_type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Real_estate" Relationship="Self.FK_Real_estate_Property_type" FromRole="Property_type" ToRole="Real_estate" />
+        </EntityType>
+        <EntityType Name="Real_estate">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="IdProperty_type" Type="Int32" Nullable="false" />
+          <Property Name="IdCities" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Squarе" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Price_on_sale" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Appraiser_price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="IdUsers" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="Self.FK_Application_Real_estate" FromRole="Real_estate" ToRole="Application" />
+          <NavigationProperty Name="Cities" Relationship="Self.FK_Real_estate_Cities" FromRole="Real_estate" ToRole="Cities" />
+          <NavigationProperty Name="Property_type" Relationship="Self.FK_Real_estate_Property_type" FromRole="Real_estate" ToRole="Property_type" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Real_estate_Users" FromRole="Real_estate" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdContract" Type="Int32" />
+          <Property Name="Result" Type="Boolean" />
+          <Property Name="Date_of_conclusion" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Contract" Relationship="Self.FK_Contract_Report" FromRole="Report" ToRole="Contract" />
+        </EntityType>
+        <EntityType Name="Request_for_an_appraiser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdUsers" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="Int32" />
+          <Property Name="Adress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contract" Relationship="Self.FK_Contract_Request_for_an_appraiser" FromRole="Request_for_an_appraiser" ToRole="Contract" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Request_for_an_appraiser_Users" FromRole="Request_for_an_appraiser" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_Role" FromRole="Role" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="IdRole" Type="Int32" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="Int32" />
+          <NavigationProperty Name="Application" Relationship="Self.FK_Application_Users" FromRole="Users" ToRole="Application" />
+          <NavigationProperty Name="Contract" Relationship="Self.FK_Contract_Users" FromRole="Users" ToRole="Contract" />
+          <NavigationProperty Name="Real_estate" Relationship="Self.FK_Real_estate_Users" FromRole="Users" ToRole="Real_estate" />
+          <NavigationProperty Name="Request_for_an_appraiser" Relationship="Self.FK_Request_for_an_appraiser_Users" FromRole="Users" ToRole="Request_for_an_appraiser" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Users_Role" FromRole="Users" ToRole="Role" />
+        </EntityType>
+        <Association Name="FK_Application_Real_estate">
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="0..1" />
+          <End Role="Application" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Real_estate">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="IdReal_Estate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Application_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Application" Type="Self.Application" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Application">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Application">
+          <End Role="Application" Type="Self.Application" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Application">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdApplication" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Real_estate_Cities">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="1" />
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Real_estate">
+              <PropertyRef Name="IdCities" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Report">
+          <End Role="Report" Type="Self.Report" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Report">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Request_for_an_appraiser">
+          <End Role="Request_for_an_appraiser" Type="Self.Request_for_an_appraiser" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request_for_an_appraiser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdApplication" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contract_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Real_estate_Property_type">
+          <End Role="Property_type" Type="Self.Property_type" Multiplicity="1" />
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property_type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Real_estate">
+              <PropertyRef Name="IdProperty_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Real_estate_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Real_estate" Type="Self.Real_estate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Real_estate">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Request_for_an_appraiser_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Request_for_an_appraiser" Type="Self.Request_for_an_appraiser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Request_for_an_appraiser">
+              <PropertyRef Name="IdUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Недвижимость_КолиEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Application" EntityType="Self.Application" />
+          <EntitySet Name="Cities" EntityType="Self.Cities" />
+          <EntitySet Name="Contract" EntityType="Self.Contract" />
+          <EntitySet Name="Property_type" EntityType="Self.Property_type" />
+          <EntitySet Name="Real_estate" EntityType="Self.Real_estate" />
+          <EntitySet Name="Report" EntityType="Self.Report" />
+          <EntitySet Name="Request_for_an_appraiser" EntityType="Self.Request_for_an_appraiser" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Application_Real_estate" Association="Self.FK_Application_Real_estate">
+            <End Role="Real_estate" EntitySet="Real_estate" />
+            <End Role="Application" EntitySet="Application" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Application_Users" Association="Self.FK_Application_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Application" EntitySet="Application" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Application" Association="Self.FK_Contract_Application">
+            <End Role="Application" EntitySet="Application" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Real_estate_Cities" Association="Self.FK_Real_estate_Cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Real_estate" EntitySet="Real_estate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Report" Association="Self.FK_Contract_Report">
+            <End Role="Report" EntitySet="Report" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Request_for_an_appraiser" Association="Self.FK_Contract_Request_for_an_appraiser">
+            <End Role="Request_for_an_appraiser" EntitySet="Request_for_an_appraiser" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contract_Users" Association="Self.FK_Contract_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Contract" EntitySet="Contract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Real_estate_Property_type" Association="Self.FK_Real_estate_Property_type">
+            <End Role="Property_type" EntitySet="Property_type" />
+            <End Role="Real_estate" EntitySet="Real_estate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Real_estate_Users" Association="Self.FK_Real_estate_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Real_estate" EntitySet="Real_estate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_for_an_appraiser_Users" Association="Self.FK_Request_for_an_appraiser_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Request_for_an_appraiser" EntitySet="Request_for_an_appraiser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Role" Association="Self.FK_Users_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="Недвижимость_КолиEntities">
+          <EntitySetMapping Name="Application">
+            <EntityTypeMapping TypeName="Model.Application">
+              <MappingFragment StoreEntitySet="Application">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
+                <ScalarProperty Name="IdReal_Estate" ColumnName="IdReal_Estate" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Full_Name" ColumnName="Full_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="Model.Cities">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contract">
+            <EntityTypeMapping TypeName="Model.Contract">
+              <MappingFragment StoreEntitySet="Contract">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
+                <ScalarProperty Name="IdApplication" ColumnName="IdApplication" />
+                <ScalarProperty Name="IdRequest_for_an_appraiser" ColumnName="IdRequest_for_an_appraiser" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Property_type">
+            <EntityTypeMapping TypeName="Model.Property_type">
+              <MappingFragment StoreEntitySet="Property_type">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Real_estate">
+            <EntityTypeMapping TypeName="Model.Real_estate">
+              <MappingFragment StoreEntitySet="Real_estate">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="IdProperty_type" ColumnName="IdProperty_type" />
+                <ScalarProperty Name="IdCities" ColumnName="IdCities" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Squarе" ColumnName="Squarе" />
+                <ScalarProperty Name="Price_on_sale" ColumnName="Price_on_sale" />
+                <ScalarProperty Name="Appraiser_price" ColumnName="Appraiser_price" />
+                <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Report">
+            <EntityTypeMapping TypeName="Model.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdContract" ColumnName="IdContract" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="Date_of_conclusion" ColumnName="Date_of_conclusion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Request_for_an_appraiser">
+            <EntityTypeMapping TypeName="Model.Request_for_an_appraiser">
+              <MappingFragment StoreEntitySet="Request_for_an_appraiser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUsers" ColumnName="IdUsers" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="Model.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Model.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,55 @@
+﻿<Window x:Class="Nedvigimost.View.Windows.Start"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Nedvigimost.View.Windows"
+        mc:Ignorable="d"
+        Title="Start" Height="450" Width="800">
+    <Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="75*"/>
+            </Grid.ColumnDefinitions>
+
+
+
+            <Border Grid.Row="1" Background="#FF928DC5">
+                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                    <Label FontSize="20" VerticalAlignment="Center" Margin="0 15 0 15"  Content="Миневра" Background="#FF928DC5" FontFamily="Yu Gothic Light" FontWeight="Bold"/>
+                    <Button Background="#FF928DC5" BorderThickness="0">
+                        <Button.Content>
+                            <StackPanel >
+                               <Image Source="/Resource/Image/hierachy_connection_company_business_first_leader_businessman_audience_targeting_group_icon_250731.png" Height="24" Width="110" />
+
+                                <Label Content="Прохоров Н.А. " />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Label Content="" FontSize="20"/>
+
+                    <Button   Content="Профиль" Background="#FF928DC5" FontSize="25" BorderThickness="0"   />
+
+                    <Button  Content="Купить" Background="#FF928DC5"  FontSize="25" BorderThickness="0"         />
+
+
+                    <Button  Content="Продать" Background="#FF928DC5" FontSize="25" BorderThickness="0"         />
+
+
+                    <Button  Background="#FF928DC5" Content="Заявки"  FontSize="25" BorderThickness="0"      />
+
+                    <Label Content="" FontSize="30"/>
+
+                    <Button   Background="#FF928DC5" Content=" Выйти" FontSize="25" BorderThickness="0" Cursor="None"      />
+
+
+                </StackPanel>
+            </Border>
+
+            <Frame x:Name="MainFrame"
+                   Grid.Column="1"/>
+
+        </Grid>
+    </Grid>
+</Window>
